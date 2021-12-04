@@ -1,5 +1,6 @@
 import subprocess
 import time
+import os
 
 from contextlib import AbstractContextManager
 from decimal import Decimal
@@ -200,6 +201,10 @@ class Document(BaseObject, AbstractContextManager):
         if self._process is not None:
             self._process.terminate()
             self._process.wait()
+        # Kill soffice.bin process manually
+        time.sleep(1)
+        os.system('killall soffice.bin')
+        time.sleep(2)
 
     @_only_connected
     def get_sheet(self, sheet_id: Union[str, int]) -> "Sheet":
